@@ -1,0 +1,6 @@
+.idea
+*.iml
+resources/app
+output
+bind_*.go
+vue/node_modules
