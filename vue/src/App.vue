@@ -1,25 +1,29 @@
 <template>
   <div class="content">
     <Board
-      style="margin-right: 128px"
+      style="margin-right: 96px"
       :picker-selection="pickerSelection"
       :grid="grid"
       @cellChange="onCellChange"
     />
-    <Picker :selection="pickerSelection" @select="pickerSelection = $event" />
+    <SidePanel
+      :pickerSelection="pickerSelection"
+      @select="pickerSelection = $event"
+      @clearBoard="clearBoard"
+    />
   </div>
 </template>
 
 <script>
 import Board from './components/Board';
-import Picker from './components/Picker';
+import SidePanel from './components/SidePanel';
 
 const LOCAL_STORAGE_KEY = 'boardGrid';
 
 export default {
   components: {
-    Picker,
     Board,
+    SidePanel,
   },
   data() {
     return {
