@@ -1,18 +1,12 @@
 <template>
   <table>
     <tbody>
-    <tr v-for="col in 9" v-bind:key="col">
-      <td v-for="row in 9" v-bind:key="row">&nbsp;</td>
-    </tr>
+      <tr v-for="col in 9" :key="col">
+        <td v-for="row in 9" :key="row">&nbsp;</td>
+      </tr>
     </tbody>
   </table>
 </template>
-
-<script>
-export default {
-  name: 'Board',
-}
-</script>
 
 <style scoped>
 td {

@@ -1,0 +1,21 @@
+FROM golang:1.14
+WORKDIR /build
+ADD go/go.mod go/go.sum ./
+RUN go mod download
+ADD go .
+RUN CGO_ENABLED=0 go build
+
+FROM node:13.8
+WORKDIR /build
+ADD vue/package.json vue/yarn.lock ./
+RUN yarn install
+ADD vue .
+RUN yarn build --mode production
+
+FROM alpine
+RUN addgroup -g 1000 -S app && adduser -u 1000 -S app -G app
+USER app
+COPY --from=0 /build/sudoku-builder /bin/sudoku-builder
+COPY --from=1 /build/dist /var/www
+ENV SUDOKU_GINMODE=release SUDOKU_STATIC=true
+ENTRYPOINT /bin/sudoku-builder

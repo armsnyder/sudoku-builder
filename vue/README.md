@@ -1,4 +1,4 @@
-# sudoku-builder
+# vue
 
 ## Project setup
 ```
