@@ -17,6 +17,9 @@
 </template>
 
 <script>
+
+const LOCAL_STORAGE_KEY = 'boardGrid';
+
 export default {
   props: {
     pickerSelection: {
@@ -144,6 +147,10 @@ export default {
           break;
       }
     });
+
+    if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
+      this.grid = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    }
   },
   methods: {
     onClickCell(i, j) {
@@ -159,6 +166,7 @@ export default {
       const newI = this.grid[i].slice(0);
       newI[j] = value;
       this.$set(this.grid, i, newI);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.grid));
     },
     cellIndex(i, j) {
       return j * 9 + i;
