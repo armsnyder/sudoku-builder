@@ -23,16 +23,20 @@ export default {
       default: 1,
     },
   },
-  mounted() {
-    window.addEventListener('keypress', (e) => {
-      const numericKeyPress = parseInt(e.key, 10);
-      if (numericKeyPress) {
-        this.$emit('select', numericKeyPress);
-      }
-    });
+  created() {
+    window.addEventListener('keypress', this.onKeyPress);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keypress', this.onKeyDown);
   },
   methods: {
     digit(row, col) { return (row - 1) * 3 + col; },
+    onKeyPress({ key }) {
+      const numericKeyPress = parseInt(key, 10);
+      if (numericKeyPress) {
+        this.$emit('select', numericKeyPress);
+      }
+    },
   },
 };
 </script>

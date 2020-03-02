@@ -95,15 +95,47 @@ export default {
       return result;
     },
   },
-  mounted() {
-    window.addEventListener('keydown', (e) => {
-      const numericKeyPress = parseInt(e.key, 10);
+  created() {
+    window.addEventListener('keydown', this.onKeyDown);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.onKeyDown);
+    console.log('removed');
+  },
+  methods: {
+    onClickCell(i, j) {
+      this.setCell(i, j, this.pickerSelection);
+      this.showGridSelection = false;
+      this.gridSelection = { i, j };
+    },
+    onRightClickCell(i, j) {
+      this.setCell(i, j, 0);
+      this.showGridSelection = false;
+    },
+    setCell(i, j, value) {
+      this.$emit('cellChange', { i, j, value });
+    },
+    cellIndex(i, j) {
+      return j * 9 + i;
+    },
+    cellClass(i, j) {
+      const result = [];
+      if (this.invalidCells.has(this.cellIndex(i, j))) {
+        result.push('invalid');
+      }
+      if (this.showGridSelection && this.gridSelection.i === i && this.gridSelection.j === j) {
+        result.push('selected');
+      }
+      return result.join(' ');
+    },
+    onKeyDown({ key, code }) {
+      const numericKeyPress = parseInt(key, 10);
       if (this.showGridSelection && numericKeyPress) {
         this.setCell(this.gridSelection.i, this.gridSelection.j, numericKeyPress);
         return;
       }
 
-      switch (e.code) {
+      switch (code) {
         case 'ArrowUp':
         case 'KeyW':
           this.showGridSelection = true;
@@ -138,33 +170,6 @@ export default {
         default:
           break;
       }
-    });
-  },
-  methods: {
-    onClickCell(i, j) {
-      this.setCell(i, j, this.pickerSelection);
-      this.showGridSelection = false;
-      this.gridSelection = { i, j };
-    },
-    onRightClickCell(i, j) {
-      this.setCell(i, j, 0);
-      this.showGridSelection = false;
-    },
-    setCell(i, j, value) {
-      this.$emit('cellChange', { i, j, value });
-    },
-    cellIndex(i, j) {
-      return j * 9 + i;
-    },
-    cellClass(i, j) {
-      const result = [];
-      if (this.invalidCells.has(this.cellIndex(i, j))) {
-        result.push('invalid');
-      }
-      if (this.showGridSelection && this.gridSelection.i === i && this.gridSelection.j === j) {
-        result.push('selected');
-      }
-      return result.join(' ');
     },
   },
 };
