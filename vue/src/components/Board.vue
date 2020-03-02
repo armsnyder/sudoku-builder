@@ -100,7 +100,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.onKeyDown);
-    console.log('removed');
   },
   methods: {
     onClickCell(i, j) {
