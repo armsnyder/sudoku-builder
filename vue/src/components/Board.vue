@@ -17,19 +17,19 @@
 </template>
 
 <script>
-
-const LOCAL_STORAGE_KEY = 'boardGrid';
-
 export default {
   props: {
     pickerSelection: {
       type: Number,
-      default: 1,
+      required: true,
+    },
+    grid: {
+      type: Array,
+      required: true,
     },
   },
   data() {
     return {
-      grid: [],
       gridSelection: { i: 0, j: 0 },
       showGridSelection: false,
     };
@@ -95,14 +95,6 @@ export default {
       return result;
     },
   },
-  beforeMount() {
-    for (let i = 0; i < 9; i++) {
-      this.grid[i] = [];
-      for (let j = 0; j < 9; j++) {
-        this.grid[i][j] = 0;
-      }
-    }
-  },
   mounted() {
     window.addEventListener('keydown', (e) => {
       const numericKeyPress = parseInt(e.key, 10);
@@ -147,10 +139,6 @@ export default {
           break;
       }
     });
-
-    if (localStorage.getItem(LOCAL_STORAGE_KEY)) {
-      this.grid = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    }
   },
   methods: {
     onClickCell(i, j) {
@@ -163,10 +151,7 @@ export default {
       this.showGridSelection = false;
     },
     setCell(i, j, value) {
-      const newI = this.grid[i].slice(0);
-      newI[j] = value;
-      this.$set(this.grid, i, newI);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.grid));
+      this.$emit('cellChange', { i, j, value });
     },
     cellIndex(i, j) {
       return j * 9 + i;
