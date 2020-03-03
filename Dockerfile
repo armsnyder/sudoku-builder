@@ -4,7 +4,7 @@ RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/i
 ADD go/go.mod go/go.sum ./
 RUN go mod download
 ADD go .
-RUN golangci-lint run
+RUN golangci-lint run --timeout 5m
 RUN go test ./...
 RUN CGO_ENABLED=0 go build
 
