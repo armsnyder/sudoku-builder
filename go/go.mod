@@ -1,4 +1,4 @@
-module sudoku-builder
+module github.com/armsnyder/sudoku-builder/go
 
 go 1.14
 

@@ -6,7 +6,7 @@ RUN go mod download
 ADD go .
 RUN golangci-lint run --timeout 5m
 RUN go test ./...
-RUN CGO_ENABLED=0 go build
+RUN CGO_ENABLED=0 go build -o sudoku-builder
 
 FROM node:13.8
 WORKDIR /build

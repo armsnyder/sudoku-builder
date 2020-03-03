@@ -56,7 +56,7 @@ linters-settings:
   gocyclo:
     min-complexity: 10
   goimports:
-    local-prefixes: sudoku-builder
+    local-prefixes: github.com/armsnyder/sudoku-builder
   unparam:
     check-exported: true
   unused:

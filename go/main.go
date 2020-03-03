@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kelseyhightower/envconfig"
 
-	"sudoku-builder/router"
+	"github.com/armsnyder/sudoku-builder/go/router"
 )
 
 type configSpec struct {

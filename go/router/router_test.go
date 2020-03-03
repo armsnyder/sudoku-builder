@@ -7,7 +7,7 @@ import (
 	"github.com/gavv/httpexpect/v2"
 	"github.com/gin-gonic/gin"
 
-	"sudoku-builder/router"
+	"github.com/armsnyder/sudoku-builder/go/router"
 )
 
 func TestSolveAPI(t *testing.T) {
