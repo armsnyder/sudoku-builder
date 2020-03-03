@@ -1,8 +1,11 @@
 FROM golang:1.14
 WORKDIR /build
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.23.7
 ADD go/go.mod go/go.sum ./
 RUN go mod download
 ADD go .
+RUN golangci-lint run
+RUN go test ./...
 RUN CGO_ENABLED=0 go build
 
 FROM node:13.8
