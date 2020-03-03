@@ -49,8 +49,15 @@ issues:
         - gomnd
         - funlen
         - scopelint
+        - unused
 linters-settings:
   errcheck:
     exclude: ./errcheck_excludes.txt
+  gocyclo:
+    min-complexity: 10
   goimports:
     local-prefixes: sudoku-builder
+  unparam:
+    check-exported: true
+  unused:
+    check-exported: true
