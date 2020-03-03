@@ -1,22 +1,25 @@
 package router
 
 import (
-	"github.com/gin-contrib/static"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"net/http/httputil"
+
+	"github.com/gin-contrib/static"
+	"github.com/gin-gonic/gin"
 )
 
 func New(isUIStatic bool, staticRoot string) *gin.Engine {
 	engine := gin.Default()
 	engine.Use(handleErrors)
 	engine.POST("/solve", solve)
+
 	if isUIStatic {
 		engine.NoRoute(static.ServeRoot("/", staticRoot))
 	} else {
 		engine.NoRoute(reverseProxyUI)
 	}
+
 	return engine
 }
 

@@ -1,6 +1,8 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,7 +34,7 @@ func solve(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, &solveResponse{
+	c.JSON(http.StatusOK, &solveResponse{
 		Solutions: []boardState{
 			{
 				{1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -57,75 +59,93 @@ func (b *boardState) isEmpty() bool {
 			}
 		}
 	}
+
 	return true
 }
 
 func (b *boardState) satisfiesConstraints() bool {
+	return b.satisfiesColumnConstraint() && b.satisfiesRowConstraint() && b.satisfiesSectionConstraint()
+}
+
+func (b *boardState) satisfiesColumnConstraint() bool {
 	var seen [9]bool
 
-	// Check column constraint
 	for i := 0; i < 9; i++ {
 		for b := range seen {
 			seen[b] = false
 		}
+
 		for j := 0; j < 9; j++ {
 			val := b[i][j]
-			if val < 0 || val > 9 {
+			if !b.isValueUnseenAndUpdateSeen(val, &seen) {
 				return false
 			}
-			if val == 0 {
-				continue
-			}
-			if seen[val-1] {
-				return false
-			}
-			seen[val-1] = true
 		}
 	}
 
-	// Check row constraint
+	return true
+}
+
+func (b *boardState) satisfiesRowConstraint() bool {
+	var seen [9]bool
+
 	for j := 0; j < 9; j++ {
 		for b := range seen {
 			seen[b] = false
 		}
+
 		for i := 0; i < 9; i++ {
 			val := b[i][j]
-			if val < 0 || val > 9 {
+			if !b.isValueUnseenAndUpdateSeen(val, &seen) {
 				return false
 			}
-			if val == 0 {
-				continue
-			}
-			if seen[val-1] {
-				return false
-			}
-			seen[val-1] = true
 		}
 	}
 
-	// Check section constraint
-	for iOffset := 0; iOffset < 9; iOffset += 3 {
-		for jOffset := 0; jOffset < 9; jOffset += 3 {
-			for b := range seen {
-				seen[b] = false
-			}
-			for i := 0; i < 3; i++ {
-				for j := 0; j < 3; j++ {
-					val := b[iOffset+i][jOffset+j]
-					if val < 0 || val > 9 {
-						return false
-					}
-					if val == 0 {
-						continue
-					}
-					if seen[val-1] {
-						return false
-					}
-					seen[val-1] = true
-				}
+	return true
+}
+
+func (b *boardState) satisfiesSectionConstraint() bool {
+	for secI := 0; secI < 3; secI++ {
+		for secJ := 0; secJ < 3; secJ++ {
+			if !b.sectionSatisfiesSectionConstraint(secI, secJ) {
+				return false
 			}
 		}
 	}
+
+	return true
+}
+
+func (b *boardState) sectionSatisfiesSectionConstraint(secI, secJ int) bool {
+	var seen [9]bool
+
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			val := b[secI*3+i][secJ*3+j]
+			if !b.isValueUnseenAndUpdateSeen(val, &seen) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
+func (b *boardState) isValueUnseenAndUpdateSeen(val int8, seen *[9]bool) bool {
+	if val < 0 || val > 9 {
+		return false
+	}
+
+	if val == 0 {
+		return true
+	}
+
+	if seen[val-1] {
+		return false
+	}
+
+	seen[val-1] = true
 
 	return true
 }

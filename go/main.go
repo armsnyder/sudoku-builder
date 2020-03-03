@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/kelseyhightower/envconfig"
 	"log"
 	"sudoku-builder/router"
+
+	"github.com/gin-gonic/gin"
+	"github.com/kelseyhightower/envconfig"
 )
 
 type configSpec struct {

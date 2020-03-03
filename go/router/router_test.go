@@ -1,11 +1,12 @@
 package router_test
 
 import (
-	"github.com/gavv/httpexpect/v2"
-	"github.com/gin-gonic/gin"
 	"net/http/httptest"
 	"sudoku-builder/router"
 	"testing"
+
+	"github.com/gavv/httpexpect/v2"
+	"github.com/gin-gonic/gin"
 )
 
 func TestSolveAPI(t *testing.T) {
@@ -133,6 +134,7 @@ func TestSolveAPI(t *testing.T) {
 	}
 
 	gin.SetMode(gin.TestMode)
+
 	srv := httptest.NewServer(router.New(true, ""))
 	defer srv.Close()
 

@@ -3,8 +3,9 @@ package router
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type apiError struct {
@@ -26,12 +27,13 @@ const (
 )
 
 func bindError(err error) *apiError {
-	if asJsonError, ok := err.(*json.UnmarshalTypeError); ok {
+	if asJSONError, ok := err.(*json.UnmarshalTypeError); ok {
 		return &apiError{
 			Code:    malformedRequestBody,
-			Message: fmt.Sprintf("Request body has malformed JSON field '%s'", asJsonError.Field),
+			Message: fmt.Sprintf("Request body has malformed JSON field '%s'", asJSONError.Field),
 		}
 	}
+
 	return &apiError{
 		Code:    malformedRequestBody,
 		Message: "Malformed request body",
