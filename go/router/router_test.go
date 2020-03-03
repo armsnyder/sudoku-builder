@@ -2,11 +2,12 @@ package router_test
 
 import (
 	"net/http/httptest"
-	"sudoku-builder/router"
 	"testing"
 
 	"github.com/gavv/httpexpect/v2"
 	"github.com/gin-gonic/gin"
+
+	"sudoku-builder/router"
 )
 
 func TestSolveAPI(t *testing.T) {
